@@ -231,8 +231,10 @@ class MultiTaskNet(nn.Module):
         mlp_layers = None
         ### START CODE HERE ###
         # MLP layer for regression task
-        
-
+        mlp_layers = nn.ModuleList()
+        for i in range(len(layer_sizes)-1):
+            mlp_layers.append(nn.Linear(layer_sizes[i], layer_sizes[i+1]))
+            mlp_layers.append(nn.ReLU())
         # Add final linear layer to the network
 
         ### END CODE HERE ###
@@ -244,12 +246,15 @@ class MultiTaskNet(nn.Module):
         """
         predictions = score = None
         ### START CODE HERE ###
-        
-
+      
         # Regression head
-        
+        predictions = torch.mm(self.U.t(), self.Q) + self.B
 
         # Matrix Factorization Head  
+        self.M = torch.mm(self.U, self.Q)
+        score = torch.cat(self.U, self.Q, self.M)
+        for layer in self.mlp_layers:
+            score = layer(score)
 
         ### END CODE HERE ###
         return predictions, score
@@ -260,12 +265,15 @@ class MultiTaskNet(nn.Module):
         """
         predictions = score = None
         ### START CODE HERE ###
-        
-
+       
         # Regression head
-        
+        predictions = torch.mm(self.U_reg.t(), self.Q_reg) + self.B
 
-        # Matrix Factorization Head 
+        # Matrix Factorization Head  
+        M_fact = torch.mm(self.U_fact, self.Q_fact)
+        score = torch.cat(self.U_fact, self.Q_fact, self.M_fact)
+        for layer in self.mlp_layers:
+            score = layer(score)
 
         ### END CODE HERE ###
         return predictions, score
