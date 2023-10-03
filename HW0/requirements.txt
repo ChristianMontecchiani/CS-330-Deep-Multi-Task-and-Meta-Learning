@@ -1,0 +1,17 @@
+cloudpickle
+cycler
+h5py
+lockfile
+numpy
+opt-einsum
+packaging
+pandas
+pickleshare
+python-dateutil
+requests
+scipy
+six
+sklearn
+tensorboard
+torch==1.12
+tqdm
