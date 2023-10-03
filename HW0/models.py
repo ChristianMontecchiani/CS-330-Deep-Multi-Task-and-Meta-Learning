@@ -279,7 +279,7 @@ class MultiTaskNet(nn.Module):
         predictions = torch.tensor(predictions)
 
         # Matrix Factorization Head  
-        M_fact = self.U_fact(user_ids)*self.Q_fact(item_ids)
+        self.M_fact = self.U_fact(user_ids)*self.Q_fact(item_ids)
         score = torch.cat([self.U_fact(user_ids), self.Q_fact(item_ids), self.M_fact], dim=1)
         for layer in self.mlp_layers:
             score = layer(score)
