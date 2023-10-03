@@ -236,6 +236,7 @@ class MultiTaskNet(nn.Module):
             mlp_layers.append(nn.Linear(layer_sizes[i], layer_sizes[i+1]))
             mlp_layers.append(nn.ReLU())
         # Add final linear layer to the network
+        mlp_layers.append(nn.Linear(layer_sizes[-1], 1))
 
         ### END CODE HERE ###
         return mlp_layers
@@ -248,14 +249,19 @@ class MultiTaskNet(nn.Module):
         ### START CODE HERE ###
       
         # Regression head
-        predictions = torch.mm(self.U.t(), self.Q) + self.B
+        predictions = list()
+        for U, Q, B in zip(self.U(user_ids), self.Q(item_ids), self.B(item_ids)):
+            predictions.append(torch.dot(U.t(), Q) + B)
+        predictions = torch.tensor(predictions)
+    
 
-        # Matrix Factorization Head  
-        self.M = torch.mm(self.U, self.Q)
-        score = torch.cat(self.U, self.Q, self.M)
+        # Matrix Factorization Head 
+        self.M = self.U(user_ids) * self.Q(item_ids)
+        score = torch.cat([self.U(user_ids), self.Q(item_ids), self.M], dim=1)
         for layer in self.mlp_layers:
             score = layer(score)
-
+        score = score.squeeze(1)
+        
         ### END CODE HERE ###
         return predictions, score
     
@@ -267,13 +273,17 @@ class MultiTaskNet(nn.Module):
         ### START CODE HERE ###
        
         # Regression head
-        predictions = torch.mm(self.U_reg.t(), self.Q_reg) + self.B
+        predictions = list()
+        for U, Q, B in zip(self.U_reg(user_ids), self.Q_reg(item_ids), self.B(item_ids)):
+            predictions.append(torch.dot(U.t(), Q) + B)
+        predictions = torch.tensor(predictions)
 
         # Matrix Factorization Head  
-        M_fact = torch.mm(self.U_fact, self.Q_fact)
-        score = torch.cat(self.U_fact, self.Q_fact, self.M_fact)
+        M_fact = self.U_fact(user_ids)*self.Q_fact(item_ids)
+        score = torch.cat([self.U_fact(user_ids), self.Q_fact(item_ids), self.M_fact], dim=1)
         for layer in self.mlp_layers:
             score = layer(score)
+        score = score.squeeze(1)
 
         ### END CODE HERE ###
         return predictions, score
