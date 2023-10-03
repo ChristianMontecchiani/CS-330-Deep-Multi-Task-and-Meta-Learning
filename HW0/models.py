@@ -271,7 +271,6 @@ class MultiTaskNet(nn.Module):
         """
         predictions = score = None
         ### START CODE HERE ###
-       
         # Regression head
         predictions = list()
         for U, Q, B in zip(self.U_reg(user_ids), self.Q_reg(item_ids), self.B(item_ids)):
