@@ -36,14 +36,13 @@ The objective for this setup is to minimize $\min_{\theta} \sum_{i=1}^{T} \mathc
 ##### How should the model be condition on $z_{i}$?
 One way to condition the model on $z_{i}$ s by assuming $z_{i}$ to be the one-hot task index. In this approach, 
 $T$ separate neural networks with distinct parameters exist, and the final output combines the 
-$z_{i}$ vector with the outputs of the $T$ neural networks. Each neural network is trained independently.
+$z_{i}$ vector with the outputs of the $T$ neural networks. Each neural network is trained independently. This obviously an extreme case.
 
-Another extreme case is to share all the parameters for all the task and just by concatenating $z_{i}$ to one of the layer.
+Another extreme case is to share all the parameters for all the task and just by concatenating $z_{i}$ to one of the layer. And in this case all parameters are shared across the task, except the paramteres of $z_{i}$.
 
-#### Concatenation Approaches
 
 ### Architectures
-An alternative is split the parameters on $\theta^{sh}$ shared parameters and task specific parameters $\theta^{i}$. The the objective is: $\min_{\theta^{sh}, \theta^{1},\dots, \theta^{T}} \sum_{i=1}^{T} \mathcal{L}_{i}(\{\theta^{sh}, \theta^{i}\}, \mathcal{D}_{i})$.
+An alternative is to split the parameters on $\theta^{sh}$ shared parameters and task specific parameters $\theta^{i}$. Then the objective is: $\min_{\theta^{sh}, \theta^{1},\dots, \theta^{T}} \sum_{i=1}^{T} \mathcal{L}_{i}(\{\theta^{sh}, \theta^{i}\}, \mathcal{D}_{i})$.
 
 ### Objective
 Vanilla Multi Task Learning (MLT) is: $\min_{\theta} \sum_{i=1}^{T} \mathcal{L}_{i}(\theta, \mathcal{D}_{i})$. Often a weighted sum over the task differently, so it becomes: 
