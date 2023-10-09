@@ -1,0 +1,10 @@
+{
+  "due_date":"Sunday, September 3 at 11:59pm PT",
+  "tex_show_guidelines": true,
+  "tex_show_submission_instructions":true,
+  "tex_show_autograder_instructions":true,
+  "tex_show_honor_code": true,
+  "tex_show_test_cases":true,
+  "tex_preamble":"",
+  "multifile_coding_submission":false
+}
