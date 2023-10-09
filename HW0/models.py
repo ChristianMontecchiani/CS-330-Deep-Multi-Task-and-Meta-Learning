@@ -79,6 +79,8 @@ class MultiTaskNet(nn.Module):
             self.U_reg, self.Q_reg, self.U_fact, self.Q_fact = self.init_separate_user_and_item_embeddings(num_users, num_items, embedding_dim)
 
         self.B = self.init_item_bias(num_users, num_items)
+        self.A = self.init_item_bias(num_users, num_items)
+        
         self.mlp_layers = self.init_mlp_layers(layer_sizes)
 
     def forward(self, user_ids, item_ids):
