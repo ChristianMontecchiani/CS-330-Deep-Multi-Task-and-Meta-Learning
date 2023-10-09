@@ -164,9 +164,9 @@ if __name__ == "__main__":
     parser.add_argument("--meta_train_steps", type=int, default=25000)
     parser.add_argument("--image_caching", type=bool, default=True)
     parser.add_argument("--device", type=str, default="cpu")
-    parser.add_argument('--compile', action=argparse.BooleanOptionalAction)
+    #parser.add_argument('--compile', action=argparse.BooleanOptionalAction)
     parser.add_argument("--backend", type=str, default="inductor", choices=['inductor', 'aot_eager', 'cudagraphs'])
-    parser.add_argument('--debug', action=argparse.BooleanOptionalAction)
+    #parser.add_argument('--debug', action=argparse.BooleanOptionalAction)
     parser.add_argument('--cache', action='store_true')
 
     args = parser.parse_args()
